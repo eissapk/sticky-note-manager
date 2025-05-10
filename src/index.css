@@ -3,4 +3,5 @@
 body {
   background-image: url("./assets/rect.svg");
   background-repeat: repeat;
+  overflow: hidden;
 }

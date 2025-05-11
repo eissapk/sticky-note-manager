@@ -1,7 +1,7 @@
 import cn from "clsx";
 import { Position } from "@/App";
 import { Trash2 } from "lucide-react";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import "./Note.css";
 
 type Color = {
@@ -9,8 +9,25 @@ type Color = {
   body: string;
 };
 
-export default function Note({ id, color, body, position, onDelete }: { id: number; color: Color; body: string; position: Position; onDelete: (id: number) => void }) {
+export default function Note({
+  id,
+  color,
+  body,
+  position,
+  pallet,
+  onDelete,
+  setLayerIsShown,
+}: {
+  id: number;
+  color: Color;
+  body: string;
+  position: Position;
+  pallet: object;
+  onDelete: (id: number) => void;
+  setLayerIsShown: (arg: boolean) => void;
+}) {
   const target = useRef(null);
+  const [currentTheme, setCurrentTheme] = useState(color);
   let initialX: null | number = null;
   let initialY: null | number = null;
 
@@ -50,19 +67,33 @@ export default function Note({ id, color, body, position, onDelete }: { id: numb
     onDelete(id);
   };
 
+  const onColorChange = (color) => {
+    setCurrentTheme(pallet[color]);
+  };
+
   return (
     <>
-      <div ref={target} className={cn("w-96 absolute")} style={{ left: `${position.x}px`, top: `${position.y}px` }}>
-        <div className={cn("flex rounded-t-sm px-4 py-2.5", [color.nav])} onMouseDown={mouseDown}>
+      <div ref={target} className={cn("w-96 absolute")} id={"note-" + id} style={{ left: `${position.x}px`, top: `${position.y}px` }}>
+        <div className={cn("flex rounded-t-sm px-4 py-2.5", [currentTheme.nav])} onMouseDown={mouseDown}>
           <button className="cursor-pointer" onClick={onDeleteHandler}>
             <Trash2 className="pointer-events-none" />
           </button>
+          <ul className="flex gap-2 items-center w-full justify-end">
+            {Object.keys(pallet).map((pal) => {
+              if (currentTheme.body != pallet[pal].body) {
+                return <li key={pal} className={`${pallet[pal].body} w-7 h-7 rounded-full border border-zinc-300 cursor-pointer`} onClick={() => onColorChange(pal)}></li>;
+              }
+            })}
+          </ul>
         </div>
         <div
           onFocus={(e) => e.target.classList.remove("truncateHeight")}
-          onBlur={(e) => e.target.classList.add("truncateHeight")}
+          onBlur={(e) => {
+            e.target.classList.add("truncateHeight");
+            setLayerIsShown(false);
+          }}
           contentEditable
-          className={cn("rounded-b-sm p-4 outline-0 truncateHeight max-h-[80vh] overflow-auto", [color.body])}
+          className={cn("rounded-b-sm p-4 outline-0 truncateHeight max-h-[80vh] overflow-auto", [currentTheme.body])}
         >
           {body}
         </div>

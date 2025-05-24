@@ -4,7 +4,10 @@
   "private": true,
   "description": "Note Manager that works offline using your flash drive",
   "main": "dist/index.html",
-  "scripts": {},
+  "scripts": {
+  "build":"cd src && npm run build",
+  "dev":"cd src && npm run dev"
+  },
   "window": {
     "title": "Note Manager",
     "toolbar": true,

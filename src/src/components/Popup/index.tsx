@@ -1,3 +1,4 @@
+// @ts-nocheck
 import "./index.css";
 import { X } from "lucide-react";
 

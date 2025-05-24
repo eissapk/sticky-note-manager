@@ -1,0 +1,1 @@
+start "" nw/win/nwjs-sdk-v0.39.0-win-x64/nw.exe .

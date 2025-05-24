@@ -1,4 +1,6 @@
-const getProperLocations = (width, height) => {
+import { Pallet } from "./types";
+
+const getProperLocations = (width: number, height: number) => {
   const sectorsNumX = Math.floor(window.innerWidth / width);
   const sectorsNumY = Math.floor(window.innerHeight / height);
   // console.warn({sectorsNumX, sectorsNumY});
@@ -29,7 +31,7 @@ const getProperLocations = (width, height) => {
   return { arrX: validLocationsX, arrY: validLocationsY };
 };
 
-export const randomizePieces = (dataArr, width, height) => {
+export const randomizePieces = (dataArr: any[], width: number, height: number) => {
   const { arrX, arrY } = getProperLocations(width, height);
   dataArr.forEach((item) => {
     const coords = {
@@ -41,4 +43,11 @@ export const randomizePieces = (dataArr, width, height) => {
     item.position.y = coords.y;
   });
   return dataArr;
+};
+
+export const pallet: Pallet = {
+  green: { nav: "bg-[#b0da9e]", body: "bg-[#c2ddb6]" },
+  yellow: { nav: "bg-[#fdf0bf]", body: "bg-[#fef5de]" },
+  blue: { nav: "bg-[#9ad2de]", body: "bg-[#a7dce9]" },
+  pink: { nav: "bg-[#fdd1fd]", body: "bg-[#ffe6fe]" },
 };

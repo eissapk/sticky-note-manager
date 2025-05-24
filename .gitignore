@@ -1,8 +1,5 @@
-node_modules
-nw
 db.json
 credentials.json
-package-lock.json
 
 **/node_modules
-nw/**/nwjs-*
+nw/**/nwjs-*/**/*

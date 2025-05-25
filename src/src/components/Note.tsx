@@ -1,6 +1,6 @@
 import cn from "clsx";
 import { Pallet, PalletItem, Position } from "@/lib/types";
-import { Trash2 } from "lucide-react";
+import { Trash2, ChevronsRight } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import "./Note.css";
 
@@ -65,7 +65,14 @@ export default function Note({
     onDelete(id);
   };
 
-  const onColorChange = (color: string) => {
+  const onColorChange = (e: React.ReactEventHandler, color: string) => {
+    const elm = e.target;
+    if (elm) {
+      const ul = elm?.parentElement;
+      if (ul) {
+        ul.classList.remove("colorsWrapperFullWidth");
+      }
+    }
     // @ts-expect-error -- todo
     setCurrentTheme(pallet[color]);
   };
@@ -94,19 +101,36 @@ export default function Note({
           <button className="cursor-pointer" onClick={onDeleteHandler}>
             <Trash2 className="pointer-events-none" />
           </button>
-          <ul className="flex gap-2 items-center w-full ms-4">
-            {Object.keys(pallet).map((pal) => {
-              if (currentTheme.body != pallet[pal as keyof typeof pallet].body) {
-                return (
-                  <li
-                    key={pal}
-                    className={`${pallet[pal as keyof typeof pallet].body} w-5 h-5 rounded-full border border-zinc-400 cursor-pointer`}
-                    onClick={() => onColorChange(pal)}
-                  ></li>
-                );
-              }
-            })}
-          </ul>
+          <div className="flex">
+            <ul className="flex gap-2 items-center ms-4 w-0 overflow-hidden transition-all">
+              {Object.keys(pallet).map((pal) => {
+                if (currentTheme.body != pallet[pal as keyof typeof pallet].body) {
+                  return (
+                    <li
+                      key={pal}
+                      className={`${pallet[pal as keyof typeof pallet].body} w-5 h-5 rounded-full border border-zinc-400 cursor-pointer`}
+                      onClick={(e) => onColorChange(e, pal)}
+                    ></li>
+                  );
+                }
+              })}
+            </ul>
+            <button
+              className="cursor-pointer "
+              onClick={(e) => {
+                const ul = e?.target?.previousElementSibling;
+                if (ul) {
+                  if (ul.classList.contains("colorsWrapperFullWidth")) {
+                    ul.classList.remove("colorsWrapperFullWidth");
+                  } else {
+                    ul.classList.add("colorsWrapperFullWidth");
+                  }
+                }
+              }}
+            >
+              <ChevronsRight className="w-4" />
+            </button>
+          </div>
         </div>
         <div
           onFocus={(e) => e.target.classList.remove("truncateHeight")}
@@ -119,7 +143,7 @@ export default function Note({
           // @ts-expect-error -- todo
           value={currentBody}
           contentEditable
-          className={cn("rounded-b-sm p-4 outline-0 truncateHeight max-h-[80vh] overflow-auto", [currentTheme.body])}
+          className={cn("min-h-[200px] rounded-b-sm p-4 outline-0 truncateHeight max-h-[80vh] overflow-auto", [currentTheme.body])}
         >
           {body}
         </div>

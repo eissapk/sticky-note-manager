@@ -6,3 +6,10 @@
   height: 200px;
   overflow: hidden;
 }
+
+.colorsWrapperFullWidth {
+  width: 76px;
+}
+.colorsWrapperFullWidth ~ button {
+  margin-inline-start: 16px;
+}

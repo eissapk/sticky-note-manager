@@ -3,13 +3,16 @@ import { Button } from "@/components/ui/button";
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "@/components/ui/command";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { SearchIcon } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export function Search({ data = [], onSelect }: { data: Data[]; onSelect: (e: any) => void }) {
   const [open, setOpen] = useState(false);
   const [searchInput, setSearchInput] = useState("");
   const [t, setT] = useState<NodeJS.Timeout | null>(null);
   const [filteredData, setFilteredData] = useState(data);
+  useEffect(() => {
+    setFilteredData(data);
+  }, [data]);
 
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     const text = e.target.value;
@@ -29,7 +32,7 @@ export function Search({ data = [], onSelect }: { data: Data[]; onSelect: (e: an
     <div className="flex items-center space-x-4 z-10">
       <Popover open={open} onOpenChange={setOpen}>
         <PopoverTrigger asChild>
-          <Button variant="ghost" className="rounded-full bg-white">
+          <Button variant="ghost" className="rounded-full bg-white py-0.5 box-content">
             <SearchIcon />
           </Button>
         </PopoverTrigger>

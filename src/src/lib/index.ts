@@ -51,3 +51,7 @@ export const pallet: Pallet = {
   blue: { nav: "bg-[#9ad2de]", body: "bg-[#a7dce9]" },
   pink: { nav: "bg-[#fdd1fd]", body: "bg-[#ffe6fe]" },
 };
+
+export function generateUniqueId() {
+  return "id-" + Date.now().toString(36) + "-" + Math.random().toString(36).substr(2, 9);
+}

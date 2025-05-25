@@ -1,3 +1,3 @@
-# linux instructions
-- npm i
-- run app.sh
+# Requirements
+
+- nwjs min ver: 0.76.0

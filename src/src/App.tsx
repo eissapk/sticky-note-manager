@@ -2,16 +2,18 @@ import { useState } from "react";
 import Popup from "./components/Popup";
 import { Data } from "./lib/types";
 import Notes from "./components/Notes";
-import NavBar from "./components/Nav/Nav";
+import NavBar from "./components/Nav";
 import Layer from "./components/Layer";
+import { Login } from "./components/Login";
 
 function App() {
+  const [isLogged, setIsLogged] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const [layerIsShown, setLayerIsShown] = useState(false);
   const [currentNoteId, setCurrentNoteId] = useState<null | number>(null);
   const [notes, setNotes] = useState<Data[]>([]);
-  const popupTitle = "Warning!";
-  const popupMessage = "This note will be deleted, Are you sure?";
+  const [popupTitle, setPopupTitle] = useState("Warning!");
+  const [popupMessage, setPopupMessage] = useState("This note will be deleted, Are you sure?");
 
   const onSuccess = () => {
     // Update UI
@@ -47,8 +49,14 @@ function App() {
         {popupMessage && <p className="">{popupMessage}</p>}
       </Popup>
       <Layer setLayerIsShown={setLayerIsShown} layerIsShown={layerIsShown} />
-      <NavBar notes={notes} onSelect={onSelect} />
-      <Notes setNotes={setNotes} notes={notes} setIsOpen={setIsOpen} setLayerIsShown={setLayerIsShown} setCurrentNoteId={setCurrentNoteId} />
+      {isLogged ? (
+        <>
+          <NavBar setNotes={setNotes} notes={notes} onSelect={onSelect} />
+          <Notes setNotes={setNotes} notes={notes} setIsOpen={setIsOpen} setLayerIsShown={setLayerIsShown} setCurrentNoteId={setCurrentNoteId} />
+        </>
+      ) : (
+        <Login setIsLogged={setIsLogged} />
+      )}
     </>
   );
 }

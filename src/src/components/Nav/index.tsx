@@ -4,11 +4,16 @@ import { Button } from "../ui/button";
 import { useState } from "react";
 import { generateUniqueId } from "@/lib";
 
-const NavBar = ({ notes, onSelect }: { notes: []; onSelect: () => void }) => {
+const NavBar = ({ notes, setNotes, onSelect }: { notes: []; setNotes: (arg: object) => []; onSelect: () => void }) => {
   const [isDark, setIsDark] = useState(true);
   const toggleBg = () => {
+    document.body.classList.remove("default", "bg");
     setIsDark(!isDark);
-    //todo: use unsplash api to get random bg if isDark == false
+    if (isDark) {
+      document.body.classList.add("bg");
+    } else {
+      document.body.classList.add("default");
+    }
   };
   const createNote = () => {
     const newNote = {
@@ -19,6 +24,9 @@ const NavBar = ({ notes, onSelect }: { notes: []; onSelect: () => void }) => {
     };
     console.log("Create new note", newNote);
 
+    setNotes((prev) => {
+      return [...prev, newNote];
+    });
     // @eissa -- crud operation -- create
   };
 

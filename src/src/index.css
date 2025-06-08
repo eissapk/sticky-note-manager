@@ -86,3 +86,7 @@ body.bg {
 svg {
   pointer-events: none;
 }
+
+div[contenteditable] {
+  white-space: pre-wrap; /* Ensure newlines are rendered */
+}

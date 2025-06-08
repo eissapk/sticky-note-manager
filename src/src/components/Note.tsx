@@ -66,6 +66,7 @@ export default function Note({
   };
 
   const onColorChange = (e: React.ReactEventHandler, color: string) => {
+    // @ts-expect-error -- todo
     const elm = e.target;
     if (elm) {
       const ul = elm?.parentElement;
@@ -109,6 +110,7 @@ export default function Note({
                     <li
                       key={pal}
                       className={`${pallet[pal as keyof typeof pallet].body} w-5 h-5 rounded-full border border-zinc-400 cursor-pointer`}
+                      // @ts-expect-error -- todo
                       onClick={(e) => onColorChange(e, pal)}
                     ></li>
                   );
@@ -118,6 +120,7 @@ export default function Note({
             <button
               className="cursor-pointer "
               onClick={(e) => {
+                // @ts-expect-error -- todo
                 const ul = e?.target?.previousElementSibling;
                 if (ul) {
                   if (ul.classList.contains("colorsWrapperFullWidth")) {

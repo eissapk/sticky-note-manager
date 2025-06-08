@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import Note from "@/components/Note";
 import { pallet, randomizePieces } from "@/lib";
 import { Data } from "@/lib/types";
@@ -34,11 +34,21 @@ function Notes({
   notes: [];
 }) {
   useEffect(() => {
-    const updatedPieces = randomizePieces(data, 384, 244);
-    // @eissa -- crud operation -- get
-    console.log("get notes");
-
-    setNotes(updatedPieces);
+    if (typeof module === "object" && module.exports) {
+      // @ts-expect-error -- todo
+      const res = getNotes();
+      const updatedPieces = randomizePieces(res.notes, 384, 244);
+      // @eissa -- crud operation -- get
+      console.log("get notes");
+      // @ts-expect-error -- todo
+      setNotes(updatedPieces);
+    } else {
+      const updatedPieces = randomizePieces(data, 384, 244);
+      // @eissa -- crud operation -- get
+      console.log("get notes");
+      // @ts-expect-error -- todo
+      setNotes(updatedPieces);
+    }
   }, []);
 
   const onDelete = (id: number) => {

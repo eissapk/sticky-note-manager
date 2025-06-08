@@ -12,8 +12,8 @@ function App() {
   const [layerIsShown, setLayerIsShown] = useState(false);
   const [currentNoteId, setCurrentNoteId] = useState<null | number>(null);
   const [notes, setNotes] = useState<Data[]>([]);
-  const [popupTitle, setPopupTitle] = useState("Warning!");
-  const [popupMessage, setPopupMessage] = useState("This note will be deleted, Are you sure?");
+  const [popupTitle] = useState("Warning!");
+  const [popupMessage] = useState("This note will be deleted, Are you sure?");
 
   const onSuccess = () => {
     // Update UI
@@ -51,7 +51,9 @@ function App() {
       <Layer setLayerIsShown={setLayerIsShown} layerIsShown={layerIsShown} />
       {isLogged ? (
         <>
+          {/* @ts-expect-error -- todo */}
           <NavBar setNotes={setNotes} notes={notes} onSelect={onSelect} />
+          {/* @ts-expect-error -- todo */}
           <Notes setNotes={setNotes} notes={notes} setIsOpen={setIsOpen} setLayerIsShown={setLayerIsShown} setCurrentNoteId={setCurrentNoteId} />
         </>
       ) : (

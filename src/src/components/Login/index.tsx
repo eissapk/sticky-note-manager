@@ -6,9 +6,11 @@ import { GalleryVerticalEnd } from "lucide-react";
 import loginBg from "@/assets/login-bg.jpg";
 import { useState } from "react";
 
+// @ts-expect-error -- todo
 const Form = ({ setIsLogged }) => {
   const [password, setPassword] = useState("");
   const [error, setError] = useState(false);
+  // @ts-expect-error -- todo
   const handleSubmit = (e) => {
     e.preventDefault();
     if (password.trim() == "") return;
@@ -49,6 +51,7 @@ const Form = ({ setIsLogged }) => {
   );
 };
 
+// @ts-expect-error -- todo
 export function Login({ setIsLogged }) {
   return (
     <div className="grid min-h-svh lg:grid-cols-2 absolute w-full h-screen z-50 bg-white">

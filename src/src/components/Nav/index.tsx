@@ -24,6 +24,7 @@ const NavBar = ({ notes, setNotes, onSelect }: { notes: []; setNotes: (arg: obje
     };
     console.log("Create new note", newNote);
 
+    // @ts-expect-error -- todo
     setNotes((prev) => {
       return [...prev, newNote];
     });

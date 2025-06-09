@@ -76,7 +76,7 @@ function addNote(obj, cb) {
   const dbPath = path.resolve(cwd + "/db.json");
   const notes = getNotes().notes;
   // todo: improve the speed of this, so instead of checking the next id, just add unique id directly
-  obj.id = getNextId(notes);
+  // obj.id = getNextId(notes);
   notes.push(obj);
   try {
     fs.writeFileSync(dbPath, JSON.stringify({ notes }, null, 2));

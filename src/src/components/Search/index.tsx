@@ -36,6 +36,7 @@ export function Search({ data = [], onSelect }: { data: Data[]; onSelect: (e: an
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     const text = e.target.value;
     setSearchInput(text);
+    if (text.trim() == "") return;
 
     if (t) clearTimeout(t);
 

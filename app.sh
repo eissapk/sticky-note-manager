@@ -4,7 +4,7 @@ platform="$(uname | tr '[:upper:]' '[:lower:]')"
 
 if [ "$platform" == 'linux' ]
 then
-    ./nw/linux/nwjs-sdk-v0.76.0-linux-x64/nw ../../../
+    ./nw/linux/nwjs-sdk-v0.76.0-linux-x64/nw .
 elif [ "$platform" == 'darwin' ]
 then
     ./nw/mac/nwjs-sdk-v0.76.0-osx-x64/nwjs.app/Contents/MacOS/nwjs .

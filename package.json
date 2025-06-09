@@ -10,6 +10,13 @@
     "watch": "cd src && npm run watch",
     "dev": "cd src && npm run dev"
   },
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "colors": "^1.4.0",
+    "commander": "^9.4.1",
+    "inquirer": "^8.2.0",
+    "inquirer-autocomplete-prompt": "^1.3.0"
+  },
   "window": {
     "title": "Note Manager",
     "toolbar": true,
@@ -34,6 +41,5 @@
         ]
       }
     ]
-  },
-  "dependencies": {}
+  }
 }

@@ -1,11 +1,14 @@
+"use client";
 import { Moon, Plus } from "lucide-react";
 import { Search } from "../Search";
 import { Button } from "../ui/button";
 import { useState } from "react";
 import { generateUniqueId } from "@/lib";
+// import { useToast } from "@/hooks/use-toast";
 
 const NavBar = ({ notes, setNotes, onSelect }: { notes: []; setNotes: (arg: object) => []; onSelect: () => void }) => {
   const [isDark, setIsDark] = useState(true);
+  // const { toast } = useToast();
   const toggleBg = () => {
     document.body.classList.remove("default", "bg");
     setIsDark(!isDark);
@@ -16,6 +19,11 @@ const NavBar = ({ notes, setNotes, onSelect }: { notes: []; setNotes: (arg: obje
     }
   };
   const createNote = () => {
+    //todo -- fix toast or use other one
+    // toast({
+    //   title: "Create",
+    //   description: `New note was added!`,
+    // });
     const newNote = {
       id: generateUniqueId(),
       body: "",

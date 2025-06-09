@@ -68,6 +68,7 @@ function Notes({
             <Note
               setLayerIsShown={setLayerIsShown}
               onDelete={onDelete}
+              // setNotes={setNotes}
               id={item.id}
               key={item.id}
               body={item.body}

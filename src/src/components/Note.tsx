@@ -11,6 +11,7 @@ export default function Note({
   position,
   pallet,
   onDelete,
+  // setNotes,
   setLayerIsShown,
 }: {
   id: number;
@@ -20,12 +21,14 @@ export default function Note({
   pallet: Pallet;
   onDelete: (id: number) => void;
   setLayerIsShown: (arg: boolean) => void;
+  // setNotes: (arg: object[]) => object[];
 }) {
   const oldBody = body;
   const oldTheme = color.nav;
   const target = useRef(null);
   const [currentTheme, setCurrentTheme] = useState(color);
   const [currentBody, setCurrentBody] = useState(body);
+  const [t, setT] = useState<NodeJS.Timeout | null>(null);
   let initialX: null | number = null;
   let initialY: null | number = null;
 
@@ -91,11 +94,31 @@ export default function Note({
 
     // @eissa -- crud operation -- update
     if (currentBody !== oldBody || nav !== oldTheme) {
-      // @ts-expect-error -- todo
-      editNote(obj, (res) => {
-        if (!res) return console.log("Can't update note!");
-        console.log("updated note", obj);
-      });
+      if (t) clearTimeout(t);
+      const time = setTimeout(() => {
+        // update UI
+        // todo: fix bug when saved in UI the cursor gets reset to the top at 1st char
+        // setNotes((prevStat) => {
+        //   // @ts-expect-error -- todo
+        //   return prevStat.map((item) => {
+        //     if (item.id == obj.id) {
+        //       item.body = obj.body;
+        //       item.color = obj.color;
+        //     }
+        //     return item;
+        //   });
+        // });
+        console.log("updated note in UI");
+
+        // update DB
+        // @ts-expect-error -- todo
+        editNote(obj, (res) => {
+          if (!res) return console.log("Can't update note!");
+          console.log("updated note", obj);
+        });
+      }, 500);
+
+      setT(time);
     }
   }, [currentTheme, currentBody]);
 
@@ -139,21 +162,19 @@ export default function Note({
             </button>
           </div>
         </div>
-        <div
+        <textarea
           onFocus={(e) => e.target.classList.remove("truncateHeight")}
           onBlur={(e) => {
             e.target.classList.add("truncateHeight");
             setLayerIsShown(false);
           }}
           // @ts-expect-error -- todo
-          onInput={(e) => setCurrentBody(e.target.textContent)}
-          // @ts-expect-error -- todo
+          onInput={(e) => setCurrentBody(e.target.value)}
           value={currentBody}
-          contentEditable
-          className={cn("min-h-[200px] rounded-b-sm p-4 outline-0 truncateHeight max-h-[80vh] overflow-auto", [currentTheme.body])}
+          className={cn("w-full resize-none min-h-[200px] rounded-b-sm p-4 outline-0 truncateHeight h-[80vh] overflow-auto", [currentTheme.body])}
         >
           {body}
-        </div>
+        </textarea>
       </div>
     </>
   );

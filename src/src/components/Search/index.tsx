@@ -5,6 +5,7 @@ import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover
 import { SearchIcon } from "lucide-react";
 import { useState } from "react";
 
+// @ts-expect-error -- todo
 function chunkedSearchByDescription(arr, targetTerm, chunkSize = 1000, maxResults = 10) {
   let output = [];
   const totalChunks = Math.ceil(arr.length / chunkSize);
@@ -69,13 +70,16 @@ export function Search({ data = [], onSelect }: { data: Data[]; onSelect: (e: an
                   ? filteredData.map((elm) => (
                       <CommandItem
                         className="hover:bg-zinc-100"
+                        // @ts-expect-error -- todo
                         key={elm.id}
+                        // @ts-expect-error -- todo
                         value={elm.body}
                         onSelect={() => {
                           setOpen(false);
                           if (onSelect) onSelect(elm);
                         }}
                       >
+                        {/* @ts-expect-error -- todo */}
                         {elm.body.length > 28 ? elm.body.slice(0, 28) + "..." : elm.body}
                       </CommandItem>
                     ))

@@ -11,8 +11,8 @@ cp node_modules -r /path/to/project/node/linux # copy modules
 cp ~/nwjs-sdk-v0.76.0-linux-x64 /path/to/project/node/linux # copy node binary file
 ----------
 cd /path/to/project/src # navigate to project src folder
-npm i # install modules
-./app.sh
+npm i # install modules -- optional as you have already the build as dist folder
+cd .. && ./app.sh
 ```
 
 ##### Final Structure
@@ -61,6 +61,14 @@ npm i # install modules
 
 ```
 cp /path/to/project -r /path/to/usb-flash
+```
+
+##### make alias
+
+```
+# ~/.bashrc
+
+alias note='/path/to/nwjs-sdk-v0.76.0-linux-x64/nw /path/to/usb-flash/project'
 ```
 
 ##### Create master password

@@ -24,11 +24,18 @@ const NavBar = ({ notes, setNotes, onSelect }: { notes: []; setNotes: (arg: obje
     };
     console.log("Create new note", newNote);
 
+    // UI
     // @ts-expect-error -- todo
     setNotes((prev) => {
       return [...prev, newNote];
     });
     // @eissa -- crud operation -- create
+    // DB
+    // @ts-expect-error -- todo
+    addNote(newNote, (res) => {
+      if (!res) return console.log("couldn't add new note");
+      console.log("new note added successfully");
+    });
   };
 
   return (

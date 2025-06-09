@@ -10,17 +10,37 @@ import { useState } from "react";
 const Form = ({ setIsLogged }) => {
   const [password, setPassword] = useState("");
   const [error, setError] = useState(false);
+  const [errorMsg, setErrorMsg] = useState("");
   // @ts-expect-error -- todo
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (password.trim() == "") return;
-    console.log(password);
-    // todo: validate from credentilas db
-    if (password == "123") {
-      setIsLogged(true);
-    } else {
+    if (password.trim() == "") {
+      console.log("Password can't be empty!");
+      setErrorMsg("Password can't be empty!");
       setError(true);
     }
+    // console.log(password);
+
+    // @ts-expect-error -- todo
+    const credentials = getCredentials();
+    if (!credentials) {
+      console.log("credentials db is empty");
+      setErrorMsg("Credentials db is empty!");
+      setError(true);
+      return;
+    }
+
+    // @ts-expect-error -- todo
+    if (!exists(password, credentials.secrets)) {
+      console.log("Wrong password!");
+      setErrorMsg("Wrong password!");
+      setError(true);
+      return;
+    }
+
+    setIsLogged(true);
+    setError(false);
+    setErrorMsg("");
   };
   return (
     <form className={cn("flex flex-col gap-6")} onSubmit={handleSubmit}>
@@ -41,7 +61,7 @@ const Form = ({ setIsLogged }) => {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
-          {error && <span className="text-red-700 text-xs">Password is wrong!</span>}
+          {error && <span className="text-red-700 text-xs">{errorMsg}</span>}
         </div>
         <Button type="submit" className="w-full bg-zinc-800 text-white">
           Login

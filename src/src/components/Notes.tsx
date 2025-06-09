@@ -2,23 +2,23 @@ import { useEffect } from "react";
 import Note from "@/components/Note";
 import { pallet, randomizePieces } from "@/lib";
 import { Data } from "@/lib/types";
-
-const data = [
-  {
-    id: 1,
-    body: "note one is the best",
-    color: "green",
-    position: { x: 10, y: 10 },
-  },
-  {
-    id: 2,
-    body: "note two is better",
-    color: "yellow",
-    position: { x: 10, y: 100 },
-  },
-  { id: 3, body: "note three is a quit good", color: "blue", position: { x: 10, y: 200 } },
-  { id: 4, body: "note four is the worest", color: "pink", position: { x: 10, y: 300 } },
-];
+let toggler: undefined | boolean;
+// const data = [
+//   {
+//     id: 1,
+//     body: "note one is the best",
+//     color: "green",
+//     position: { x: 10, y: 10 },
+//   },
+//   {
+//     id: 2,
+//     body: "note two is better",
+//     color: "yellow",
+//     position: { x: 10, y: 100 },
+//   },
+//   { id: 3, body: "note three is a quit good", color: "blue", position: { x: 10, y: 200 } },
+//   { id: 4, body: "note four is the worest", color: "pink", position: { x: 10, y: 300 } },
+// ];
 
 function Notes({
   setIsOpen,
@@ -34,20 +34,26 @@ function Notes({
   notes: [];
 }) {
   useEffect(() => {
-    if (typeof module === "object" && module.exports) {
-      // @ts-expect-error -- todo
-      const res = getNotes();
-      const updatedPieces = randomizePieces(res.notes, 384, 244);
+    let updatedPieces = [];
+    // @ts-expect-error -- todo
+    let res = getNotes();
+    // res = data; // browser
+    if (res) {
+      // randomize only once
+      if (typeof toggler == "undefined") {
+        updatedPieces = randomizePieces(res.notes, 384, 244);
+        toggler = true;
+        console.log("randomizePieces");
+      } else {
+        updatedPieces = res.notes;
+        console.log("do NOT randomizePieces");
+      }
+
       // @eissa -- crud operation -- get
       console.log("get notes");
-      // @ts-expect-error -- todo
       setNotes(updatedPieces);
     } else {
-      const updatedPieces = randomizePieces(data, 384, 244);
-      // @eissa -- crud operation -- get
-      console.log("get notes");
-      // @ts-expect-error -- todo
-      setNotes(updatedPieces);
+      console.error("Can't connect to notes db");
     }
   }, []);
 

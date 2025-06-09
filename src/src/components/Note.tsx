@@ -89,9 +89,13 @@ export default function Note({
       position: { x: 10, y: 10 },
     };
 
+    // @eissa -- crud operation -- update
     if (currentBody !== oldBody || nav !== oldTheme) {
-      // @eissa -- crud operation -- update
-      console.log("updated note", obj);
+      // @ts-expect-error -- todo
+      editNote(obj, (res) => {
+        if (!res) return console.log("Can't update note!");
+        console.log("updated note", obj);
+      });
     }
   }, [currentTheme, currentBody]);
 

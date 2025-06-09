@@ -3,16 +3,35 @@ import { Button } from "@/components/ui/button";
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "@/components/ui/command";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { SearchIcon } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useState } from "react";
+
+function chunkedSearchByDescription(arr, targetTerm, chunkSize = 1000, maxResults = 10) {
+  let output = [];
+  const totalChunks = Math.ceil(arr.length / chunkSize);
+  // console.log({ totalChunks });
+
+  for (let i = 0; i < totalChunks; i++) {
+    const start = i * chunkSize;
+    const end = Math.min(start + chunkSize, arr.length);
+    const chunk = arr.slice(start, end);
+
+    // console.log("search chunks", i);
+    // Linear search in this chunk
+    for (const item of chunk) {
+      // console.log("search term", item);
+      if (output.length >= maxResults) return output; // return and break the loop if found matches <= maxResults
+      if (item.body.toLowerCase().includes(targetTerm.toLowerCase())) output.push(item);
+    }
+  }
+
+  return output; // No match found in any chunk
+}
 
 export function Search({ data = [], onSelect }: { data: Data[]; onSelect: (e: any) => void }) {
   const [open, setOpen] = useState(false);
   const [searchInput, setSearchInput] = useState("");
   const [t, setT] = useState<NodeJS.Timeout | null>(null);
-  const [filteredData, setFilteredData] = useState(data);
-  useEffect(() => {
-    setFilteredData(data);
-  }, [data]);
+  const [filteredData, setFilteredData] = useState([]);
 
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     const text = e.target.value;
@@ -21,9 +40,12 @@ export function Search({ data = [], onSelect }: { data: Data[]; onSelect: (e: an
     if (t) clearTimeout(t);
 
     const time = setTimeout(() => {
-      const output = data.filter((item) => item.body.toLowerCase().includes(text.toLowerCase()));
-      setFilteredData(output.slice(0, 10));
-    }, 200);
+      // max results by 3 for fast search
+      // split data array by 50 length for fast search
+      const output = chunkedSearchByDescription(data, text, 50, 3);
+      // @ts-expect-error -- todo
+      setFilteredData(output);
+    }, 500);
 
     setT(time);
   };
@@ -42,20 +64,21 @@ export function Search({ data = [], onSelect }: { data: Data[]; onSelect: (e: an
             <CommandList>
               <CommandEmpty>No results found.</CommandEmpty>
               <CommandGroup>
-                {filteredData?.length &&
-                  filteredData.map((elm) => (
-                    <CommandItem
-                      className="hover:bg-zinc-100"
-                      key={elm.id}
-                      value={elm.body}
-                      onSelect={() => {
-                        setOpen(false);
-                        if (onSelect) onSelect(elm);
-                      }}
-                    >
-                      {elm.body.length > 28 ? elm.body.slice(0, 28) + "..." : elm.body}
-                    </CommandItem>
-                  ))}
+                {filteredData?.length
+                  ? filteredData.map((elm) => (
+                      <CommandItem
+                        className="hover:bg-zinc-100"
+                        key={elm.id}
+                        value={elm.body}
+                        onSelect={() => {
+                          setOpen(false);
+                          if (onSelect) onSelect(elm);
+                        }}
+                      >
+                        {elm.body.length > 28 ? elm.body.slice(0, 28) + "..." : elm.body}
+                      </CommandItem>
+                    ))
+                  : ""}
               </CommandGroup>
             </CommandList>
           </Command>

@@ -7,6 +7,7 @@
     "dev": "vite",
     "build": "rm -r ../dist && tsc -b && vite build && mv dist ..",
     "xbuild": "tsc -b && vite build && mv dist ..",
+    "watch": "vite build --watch",
     "lint": "eslint .",
     "preview": "vite preview"
   },

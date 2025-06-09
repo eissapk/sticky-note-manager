@@ -6,6 +6,8 @@
   "main": "dist/index.html",
   "scripts": {
     "build": "cd src && npm run build",
+    "xbuild": "cd src && npm run xbuild",
+    "watch": "cd src && npm run watch",
     "dev": "cd src && npm run dev"
   },
   "window": {

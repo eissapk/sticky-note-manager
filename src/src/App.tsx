@@ -21,9 +21,15 @@ function App() {
       setNotes((prevState) => {
         return prevState.filter((item) => item.id !== currentNoteId);
       });
+
       // Update DB
       // @eissa -- crud operation delete
       console.log("deleted note", currentNoteId);
+      // @ts-expect-error -- todo
+      removeNote(currentNoteId, (res) => {
+        if (!res) return console.log("couldn't delete note #" + currentNoteId);
+        console.log("Note " + currentNoteId + " deleted!");
+      });
 
       setIsOpen(false);
     }
